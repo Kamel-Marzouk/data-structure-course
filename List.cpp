@@ -89,6 +89,17 @@ char List::retrieveData()
 	return cursor->data;
 }
 
+int List::retrieveKey()
+{
+	return cursor->key;
+}
+
+void List::retrieveAllData(int &k, char &d)
+{
+	k = cursor ->key;
+	d = cursor->data; //return cursor->data
+}
+
 void List::insertFirst(int k, char d)
 {
 	NodePointer p = new node;
@@ -137,15 +148,21 @@ void List::deleteNode()
 {
 	NodePointer p;
 	p = cursor;
-	cursor = cursor->next;
 	if(!curIsEmpty())
 	{
 		if(atFirst())
-			head = cursor;	
+		{
+			cursor = cursor->next;
+			head = cursor;
+			delete p;	
+		}
 		else
+		{
+			cursor = cursor->next;
 			prev->next = cursor; 
+			delete p;	
+		}		
 	}
-	delete p;
 }
 
 void List::deleteFirst()
@@ -230,4 +247,29 @@ void List::traverse()
 		advance();
 	}
 }
+
+int List::r_list_size(NodePointer h)
+{
+	if (h == NULL) return 0;
+	return 1 + r_list_size(h->next);
+}
+
+int List::recursiveListSize()
+{
+	return r_list_size(head);
+}
+
+int List::display(NodePointer h)
+{
+	if(h == NULL) return 0; 
+	cout << "key: " << h-> key << " - data " << h->data << endl;
+	display(h->next); 
+}
+
+int List::displayList()
+{
+	return display(head);
+}
+
+
 
